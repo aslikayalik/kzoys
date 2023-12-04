@@ -1,0 +1,88 @@
+﻿@using AduKısmiSistem.Data.Enums;
+@using System.ComponentModel.DataAnnotations;
+@model Student
+
+@{
+    ViewBag.Title = "Edit Student";
+}
+
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2>Öğrenci Bilgileri Düzenleme Sayfası</h2>
+        <hr />
+    </div>
+
+@using (Html.BeginForm("Edit", "Student", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+      <div class="row">
+    <div class="col-md-6">
+    <input type="hidden" value="Id" id = "Id" />
+    <div class="form-group">
+        @Html.LabelFor(model => model.StudentName, "Ad")
+        @Html.TextBoxFor(model => model.StudentName, new { @class = "form-control" , oninput="capitalizeFirstWord(this)" })
+        @Html.ValidationMessageFor(model => model.StudentName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StudentLastName, "Soyad")
+        @Html.TextBoxFor(model => model.StudentLastName, new { @class = "form-control" , oninput="toUpperCase(this)" })
+        @Html.ValidationMessageFor(model => model.StudentLastName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TC, "TC")
+        @Html.TextBoxFor(model => model.TC, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.TC)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IBAN, "IBAN")
+        @Html.TextBoxFor(model => model.IBAN, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.IBAN)
+    </div>
+
+       <div class="form-group">
+    @Html.LabelFor(model => model.SGKType, "SGK Tipi")
+    <select asp-for="SGKType" class="form-control">
+        @foreach (var value in Enum.GetValues(typeof(SGKType)))
+        {
+            var displayAttribute = typeof(SGKType).GetMember(value.ToString())[0]
+            .GetCustomAttributes(typeof(DisplayAttribute), false)
+            .SingleOrDefault() as DisplayAttribute;
+
+            var displayName = displayAttribute != null ? displayAttribute.Name : value.ToString();
+
+            <option value="@value">@displayName</option>
+        }
+        @Html.ValidationMessageFor(model => model.SGKType)
+    </select>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SGKEntrance, "SGK Giriş Tarihi")
+        @Html.TextBoxFor(model => model.SGKEntrance, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SGKEntrance)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SGKExit, "SGK Çıkış Tarihi")
+        @Html.TextBoxFor(model => model.SGKExit, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.SGKExit)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DepartmentId, "Birim")
+        @Html.DropDownList("DepartmentId", (SelectList)ViewBag.DepartmentList, "Birim Seçiniz", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DepartmentId)
+    </div>
+    </div>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary" style="width:150px">Düzenle</button>
+    <a asp-controller="Student" asp-action="Index" class="btn btn-secondary" style="width:auto">
+        Öğrenci Listesine Dön
+    </a>
+}
+
+</div>

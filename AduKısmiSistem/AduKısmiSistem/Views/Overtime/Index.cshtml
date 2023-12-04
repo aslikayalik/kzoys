@@ -1,0 +1,108 @@
+﻿@model (List<Overtime> overtimeList, List<Wage> wageList)
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+@{
+   
+    var tableContent = @"
+
+       <h3 style=""text-align: center"">AYDIN ADNAN MENDERES ÜNİVERSİTESİ</h3>
+ <h3 style=""text-align: center"">KISMİ ZAMANLI ÖĞRENCİ ÇALIŞMA DEVAM CETVELİ</h3>
+
+        <table class=""table table-bordered table-striped"" cellpadding=""7"" cellspacing=""7"" style= ""text-align: center;"" style =""vertical-align: middle;"" >
+            <thead>
+                <tr>
+                    <th>AD</th>
+                    <th>SOYAD</th>";
+
+
+  
+    for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15); date <= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).AddMonths(1).AddDays(-1); date = date.AddDays(1))
+    {
+        if (date.Day == 15 || date.Day == 1)
+        {
+            tableContent += $"<th>{date.ToString("dd/MM/yyyy")}</th>";
+        }
+
+        else
+        {
+            tableContent += $"<th>{date.Day}</th>";
+        }
+    }
+
+  
+    tableContent += @"
+                    <th>Toplam Çalışma Saati</th>
+                    <th>Gün</th>
+                    <th>Asgari Karşılık</th>
+                    <th>Hak Ediş</th>
+                </tr>
+            </thead>
+            <tbody>";
+
+    var studentGroupedHours = Model.overtimeList
+        .GroupBy(o => new { o.Student.StudentName, o.Student.StudentLastName })
+        .Select(group => new
+        {
+            StudentName = group.Key.StudentName,
+            StudentLastName = group.Key.StudentLastName,
+            TotalHoursWorked = group
+                .Where(o => o.StartTime >= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15)
+                            && o.StartTime <= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).AddMonths(1).AddDays(-1))
+                .Sum(o => o.Title)
+        });
+
+    foreach (var item in studentGroupedHours)
+    {
+        var day = Math.Ceiling(item.TotalHoursWorked / 7.5);
+
+        var hourlyMinimumWage = Model.wageList[0].HourlyMinumumWage;
+        var hourlyWage = Model.wageList[0].HourlyWage;
+
+        var asgariKarsilik = item.TotalHoursWorked * hourlyMinimumWage;
+        var hakEdis = item.TotalHoursWorked * hourlyWage;
+
+        tableContent += $@"
+            <tr>
+                <td>{item.StudentName}</td>
+                <td>{item.StudentLastName}</td>";
+
+        for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15); date <= new DateTime(DateTime.Now.Year, DateTime.Now.Month, 15).AddMonths(1).AddDays(-1); date = date.AddDays(1))
+        {
+            var dailyHours = Model.overtimeList.Where(o => o.StartTime.Date == date.Date && o.Student.StudentName == item.StudentName && o.Student.StudentLastName == item.StudentLastName).Sum(o => o.Title);
+            tableContent += $"<td>{dailyHours}</td>";
+        }
+
+        tableContent += $@"
+                <td>{item.TotalHoursWorked}</td>
+                <td>{day}</td>
+                <td>{asgariKarsilik}</td>
+                <td>{hakEdis}</td>
+            </tr>";
+    }
+
+    tableContent += @"
+            </tbody>
+        </table>";
+
+    tableContent += @"<h5 style=""text-align: center"">Yukarıda yazılı mesai saatlerini birimimizde çalışmak suretiyle geçirdiğini beyan eder, gereğini arz ederim.</h5>";
+    tableContent += $@"<h5 style=""text-align: right;"">Ait olduğu Ay / Yıl: {DateTime.Now.Month}/{DateTime.Now.Year}</h5>"; 
+    tableContent += @"<h4 style=""text-align: right;"" >YETKİLİ İSMİ </h4>";
+    tableContent += @"<h4 style=""text-align: right;"">İMZA </h4>";
+
+}
+
+
+
+
+@Html.Raw(tableContent)
+
+
+<form method="post" action="/Pdf/DownloadPdf">
+    <input type="hidden" name="tableContent" value='@tableContent'>
+
+    <button type="submit" class="btn btn-warning text-white mx-2" style="cursor:pointer">PDF olarak indir</button>
+</form>
+

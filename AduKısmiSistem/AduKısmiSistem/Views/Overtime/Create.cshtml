@@ -1,0 +1,167 @@
+﻿@using AduKısmiSistem.DTOs;
+@model (Overtime overtime, List<StudentDto> students)
+
+
+<html>
+<head>
+    <meta charset='utf-8' />
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.js'></script>
+
+    <link rel="stylesheet" href="~/css/style.css">
+    <script src="~/js/main.js"></script>
+
+</head>
+<body>
+
+    <h2 class="page-title">Mesai Ekleme Sayfası</h2>
+
+</body>
+</html>
+
+
+
+
+
+<form asp-controller="Overtime" asp-action="Create"  method="post">
+
+
+    <div class="row">
+        <div class="col-md-6">
+            @if (Model.students != null)
+            {
+                var student = Model.students.FirstOrDefault(s => s.Id == Model.overtime.StudentId);
+                if (student != null)
+                {
+                    <div class="row">
+                        <div style="display: flex;">
+                            <div class="student-name">Öğrenci : @student.StudentName  @student.StudentLastName</div>
+                         
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+            <button type="submit" class="btn btn-color">Kaydet</button>
+        </div>
+
+    </div>
+
+
+
+    <input type="hidden" name="overtime.StudentID" value="@Model.overtime.StudentId">
+
+    <div id='calendar'></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var studentID = "@Model.overtime.StudentId";
+            var totalHoursWorked = 0;
+            var maxWeeklyHours = 10;
+            var selectedDates = []; // Seçilen tarihlerin dizisi
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'tr',
+                height: 450,
+                initialView: 'dayGridMonth',
+                editable: true,
+                selectable: true,
+                eventDisplay: 'block',
+
+             
+
+                dayCellContent: function (arg) {
+                    var cellContent = document.createElement('div');
+                    cellContent.className = 'day-cell-content';
+                    cellContent.innerHTML = arg.dayNumberText;
+
+                    return { domNodes: [cellContent] };
+                },
+
+                events: function (fetchInfo, successCallback, failureCallback) {
+                    $.ajax({
+                        url: `/Overtime/GetStudentOvertimes/${studentID}`,
+                        type: "GET",
+                        data: {
+                            start: fetchInfo.startStr,
+                            end: fetchInfo.endStr
+                        },
+                        success: function (data) {
+                            var events = data.map(function (mesai) {
+                                return {
+                                    start: mesai.start,
+                                    title: mesai.title
+                                };
+                            });
+                            successCallback(events);
+                        },
+                        error: function () {
+                            failureCallback([]);
+                        }
+                    });
+                },
+                displayEventTime: false,
+                eventColor: '#7E57C2',
+
+                select: function (info) {
+                    var dayOfWeek = info.start.getDay(); 
+                    var number = parseInt(prompt('Sayı (1-8 arası):'));
+                        if (!isNaN(number) && number >= 1 && number <= 8) {
+                            var title = number;
+                            calendar.addEvent({
+                                title: title,
+                                start: info.startStr,
+                                end: info.endStr,
+                                number: number
+                            });
+
+                            totalHoursWorked += number;
+                            selectedDates.push(info.startStr);
+
+                        if (totalHoursWorked > maxWeeklyHours) {
+                            alert('Haftalık mesai sınırını aştınız. Lütfen kontrol edin.');
+                            totalHoursWorked -= number; // Eklenen saat miktarını geri al
+                            selectedDates.pop(); // Eklenen tarihi listeden çıkar
+                            return;
+                        } else {
+                            document.getElementById('selectedDate').value = selectedDates.join(',');
+                            document.getElementById('selectedHoursWorked').value = totalHoursWorked;
+                        }
+                    } else {
+                        alert('Lütfen geçerli bir sayı girin (1-8 arası).');
+                    }
+                    calendar.unselect();
+                   
+                },
+                eventClick: function (info) {
+                    var number = parseInt(prompt('Yeni Sayı (1-8 arası):'));
+                    if (!isNaN(number) && number >= 1 && number <= 8) {
+                        var oldNumber = info.event.extendedProps.number;
+                        info.event.setProp('title', number);
+                        info.event.setExtendedProp('number', number);
+
+                        if (totalHoursWorked - oldNumber + number > maxWeeklyHours) {
+                            alert('Haftalık mesai sınırını aşmanıza neden olacak. Lütfen kontrol edin.');
+                            return;
+                        }
+                        else {
+                            document.getElementById('selectedDate').value = selectedDates.join(',');
+                            document.getElementById('selectedHoursWorked').value = totalHoursWorked;
+                        }
+                    } else {
+                        alert('Lütfen geçerli bir sayı girin (1-8 arası).');
+                    }
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+    <input type="hidden" id="selectedDate" name="overtime.startTime">
+    <input type="hidden" id="selectedHoursWorked" name="overtime.title">
+
+
+
+
+</form>

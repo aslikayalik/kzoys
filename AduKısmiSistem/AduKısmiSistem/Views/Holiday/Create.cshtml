@@ -1,0 +1,43 @@
+﻿@model Holiday
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2>Resmi Tatil Ekleme Sayfası</h2>
+        <hr />
+    </div>
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+           
+            <div class="form-group">
+                <label asp-for="HolidayName" class="control-label">Resmi Tatil Adı</label>
+                <input asp-for="HolidayName" class="form-control" oninput="capitalizeFirstWord(this)" />
+                <span asp-validation-for="HolidayName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HolidayStartDate" class="control-label">Başlangıç Tarihi</label>
+                <input asp-for="HolidayStartDate" class="form-control" type="date" />
+                <span asp-validation-for="HolidayStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HolidayEndDate" class="control-label">Bitiş Tarihi</label>
+                <input asp-for="HolidayEndDate" class="form-control" type="date" />
+                <span asp-validation-for="HolidayEndDate" class="text-danger"></span>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary" style="width:150px">Ekle</button>
+            <a asp-controller="Holiday" asp-action="Index" class="btn btn-secondary" style="width:auto">
+                Tatil Listesine Dön
+            </a>
+           
+        </form>
+    </div>
+</div>
+</div>
+
+
+

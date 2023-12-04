@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Department>
+
+@{
+    ViewData["Title"] = "Index";
+
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+
+    if (ViewBag.Paper != null)
+    {
+        pager = ViewBag.Paper;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        
+        <div class="col-6">
+            <h2 class="text-primary">Birim Listesi</h2>
+
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Department" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Birim Ekle
+            </a>
+       
+        </div>
+    </div>
+    <br /><br />
+
+
+    <table class="table table-striped border">
+    <thead>
+            <tr class="table-secondary">
+            <th>
+                Birim Adı
+            </th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var obj in Model) 
+    {
+        <tr>
+            <td>
+            @obj.DepartmentName
+            </td>
+            <td>
+                <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Department" asp-action="Edit" asp-route-id="@obj.Id"
+                            class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Düzenle</a>
+                            <a asp-controller="Department" asp-action="Delete" asp-route-id="@obj.Id"
+                               class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i>Sil</a>
+                </div>
+
+            </td>
+        </tr>
+
+
+    }
+    </tbody>
+
+     
+</table>
+</div>
+
+@if ((int)ViewBag.TotalPages > 1)
+{
+    <ul class="pagination justify-content-end">
+        @for (var p = 1; p <= (int)ViewBag.TotalPages; p++)
+        {
+            <li class="page-item @(p == (int)ViewBag.CurrentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = p })">@p</a>
+            </li>
+        }
+    </ul>
+}
+

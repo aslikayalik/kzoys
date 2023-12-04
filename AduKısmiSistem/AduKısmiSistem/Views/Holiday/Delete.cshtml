@@ -1,0 +1,44 @@
+﻿@model Holiday
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2>Resmi Tatil Silme Sayfası</h2>
+        <hr />
+    </div>
+<div>
+
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HolidayName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HolidayName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HolidayStartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HolidayStartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HolidayEndDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HolidayEndDate)
+        </dd>
+      
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-primary" style="width:150px" /> |
+        <a asp-action="Index" class="btn btn-secondary" style="width:auto">Tatil Listesine Dön</a>
+    </form>
+
+   
+</div>
+</div>

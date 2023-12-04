@@ -1,0 +1,72 @@
+﻿@model Student
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2>Öğrenci Silme Sayfası</h2>
+        <hr />
+    </div>
+<div>
+   
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StudentName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StudentLastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StudentLastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TC)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IBAN)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IBAN)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SGKType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SGKType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SGKEntrance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SGKEntrance)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SGKExit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SGKExit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Department)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Department.DepartmentName)
+        </dd>
+     
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Sil" class="btn btn-primary" style="width:150px" />  |
+        <a asp-action="Index" class="btn btn-secondary" style="width:auto">Öğrenci Listesine Dön</a>
+    </form>
+</div>
+</div>

@@ -1,0 +1,76 @@
+﻿@model RegisterViewModel
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+        <h2>Yetkili Ekleme Sayfası</h2>
+        <hr />
+    </div>
+<form asp-controller="Account" asp-action="Register" method="post" role="form">
+    <div class="row">
+        <div class="col-md-6">
+    
+   
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2">Email</label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Name" class="col-md-2">Ad</label>
+        <div class="col-md-10">
+         
+            <input asp-for="Name" class="form-control" oninput="capitalizeFirstWord(this)" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="col-md-2">Soyad</label>
+        <div class="col-md-10">
+            <input asp-for="LastName" class="form-control" oninput="toUpperCase(this)" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DepartmentId, "Birim")
+        @Html.DropDownList("DepartmentId", (SelectList)ViewBag.DepartmentList, "Birim Seçiniz", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DepartmentId)
+    </div>
+
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2">Şifre</label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword" class="col-md-2">Şifre Tekrar</label>
+        <div class="col-md-10">
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="RoleSelected" class="col-md-2">Yetki</label>
+        <div class="col-md-10">
+            <select asp-for="RoleSelected" asp-items="@Model.RoleList" class="form-control">
+                <option disabled selected>--Yetkiyi Seçiniz--</option>
+            </select>
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary" style="width:150px">Ekle</button>
+        <a asp-controller="User" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Kullanıcı Listesine Dön
+        </a>
+ 
+</form>
+
+</div>

@@ -1,0 +1,31 @@
+﻿@model Department
+
+<form asp-controller="Department" asp-action="Create" method="post">
+  
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+          <h2 >Birim Ekleme Sayfası</h2>
+               <hr/>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+            <label asp-for="DepartmentName">Birim Adı</label>
+            <input asp-for="DepartmentName" class="form-control" oninput="capitalizeFirstWord(this)" />
+            <span asp-validation-for="DepartmentName" class="text-danger"></span>
+        </div>
+
+            </div>
+       
+        </div>
+
+        <br />
+        <button type="submit" class="btn btn-primary" style="width:150px">Ekle</button>
+        <a asp-controller="Department" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Birim Listesine Dön
+        </a>
+
+    </div>
+</form>
+
+

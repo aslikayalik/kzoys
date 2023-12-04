@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Student>
+@{
+    ViewData["Title"] = "Index";
+
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+
+    if (ViewBag.Paper != null)
+    {
+        pager = ViewBag.Paper;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        
+        <div class="col-6">
+            <h2 class="text-primary">Öğrenci Listesi</h2>
+
+        </div>
+        <div class="col-6 text-end">
+               @if (User.IsInRole("Admin"))
+                            {
+            <a asp-controller="Student" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> &nbsp; Öğrenci Ekle
+            </a>
+                            }
+            <input type="text" id="search" placeholder="Öğrenci adı veya soyadı giriniz">
+            <button id="searchButton" class="btn btn-secondary" style="width:auto">Ara</button>
+        </div>
+    </div>
+    <br /><br />
+
+
+    <table class="table table-striped border">
+    <thead>
+            <tr class="table-secondary">
+            <th>
+                Öğrenci Adı
+            </th>
+                <th>
+                    Öğrenci Soyadı
+                </th>
+            
+                <th>
+                 TC
+                </th>
+                  <th>
+              IBAN
+            </th>
+                <th>
+                    SGK Tipi
+                </th>
+                <th>
+                   SGK Giriş Tarihi
+                </th>
+                <th>
+                   SGK Çıkış Tarihi
+                </th>
+                <th>
+                    Birim
+                </th>
+                <th>
+                  İşlemler
+                </th>
+     
+        </tr>
+    </thead>
+    <tbody>
+    @foreach(var obj in Model) 
+    {
+        <tr>
+           
+                    <td>
+                        @obj.StudentName
+                    </td>
+                    <td>
+                        @obj.StudentLastName
+                    </td>
+                 
+                    <td>
+                        @obj.TC
+                    </td>
+                    <td>
+                        @obj.IBAN
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => obj.SGKType)
+                    </td>
+
+                    <td>
+                        @obj.SGKEntrance.ToShortDateString()
+                    </td>
+                    <td>
+                        @obj.SGKExit.ToShortDateString()
+                    </td>
+                    <td>
+                        @obj.Department.DepartmentName
+                    </td>
+
+            <td>
+                <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Overtime" asp-action="Create" asp-route-id="@obj.Id"
+                               class="btn btn-warning text-white mx-2" style="cursor:pointer"><i class="bi bi-pencil-square"></i>Mesai Ekle</a>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Student" asp-action="Edit" asp-route-id="@obj.Id"
+                                class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Düzenle</a>
+                                <a asp-controller="Student" asp-action="Delete" asp-route-id="@obj.Id"
+                                class="btn btn-danger mx-2"><i class="bi bi-trash-fill"></i>Sil</a>
+                            }
+                        </div>
+
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+</div>
+
+
+@if ((int)ViewBag.TotalPages > 1)
+{
+    <ul class="pagination justify-content-end">
+        @for (var p = 1; p <= (int)ViewBag.TotalPages; p++)
+        {
+            <li class="page-item @(p == (int)ViewBag.CurrentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = p })">@p</a>
+            </li>
+        }
+    </ul>
+}

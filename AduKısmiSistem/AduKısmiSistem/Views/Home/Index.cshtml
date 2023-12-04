@@ -1,0 +1,39 @@
+﻿@inject Microsoft.AspNetCore.Authorization.IAuthorizationService Authoriation
+
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+@{
+    var isAdmin = await Authoriation.AuthorizeAsync(User, null, "Admin");
+}
+
+<div class="text-center">
+<div class="border p-3 mt-4">
+    <div class="row pb-2">
+            <div><h1>Aydın Adnan Menderes Üniversitesi</h1></div>
+            <div><h1>Kısmi Zamanlı Öğrenci Takip Sistemi</h1></div>
+            
+      
+    </div>
+
+   
+    @if (User.Identity.IsAuthenticated)
+    {
+       
+        <br /><br />
+
+        @if (isAdmin.Succeeded)
+        {
+            <h2>Talimatlar : Yönetici</h2>
+        }
+        else
+        {
+            <h2>Talimatlar : Birim Yöneticisi</h2>
+        }
+    }
+
+
+
+</div>
+</div>

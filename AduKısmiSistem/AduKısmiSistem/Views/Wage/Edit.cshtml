@@ -1,0 +1,34 @@
+﻿@model Wage
+
+
+
+<form method="post" asp-action="Edit">
+
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+         <h2>Ücret Düzenleme Sayfası</h2>
+          <hr/>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+        <div class="mb-3">
+            <label asp-for="HourlyMinumumWage">Saatlik Asgari Ücret</label>
+            <input asp-for="HourlyMinumumWage" class="form-control" />
+            <span asp-validation-for="HourlyMinumumWage" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="HourlyWage">Saatlik Ücret</label>
+            <input asp-for="HourlyWage" class="form-control" />
+            <span asp-validation-for="HourlyWage" class="text-danger"></span>
+        </div>
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary" style="width:150px">Düzenle</button>
+        <a asp-controller="Wage" asp-action="Index" class="btn btn-secondary" style="width:auto">
+            Ücret Listesine Dön
+        </a>
+
+    </div>
+</form>
+

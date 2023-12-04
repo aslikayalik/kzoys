@@ -1,0 +1,53 @@
+﻿@model List<Wage>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+
+        <div class="col-6">
+            <h2 class="text-primary">Ücret Listesi</h2>
+
+        </div>
+      
+    </div>
+    <br /><br />
+
+
+    <table class="table table-striped border">
+        <thead>
+            <tr class="table-secondary">
+                <th>
+                Saatlik Asgari Ücret
+                </th>
+                <th>
+                    Saatlik Ücret
+                </th>
+                <th>İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td>
+                        @obj.HourlyMinumumWage
+                    </td>
+                    <td>
+                        @obj.HourlyWage
+                    </td>
+                    <td>
+                        <div class="w-75 btn-group" role="group">
+                            <a asp-controller="Wage" asp-action="Edit" asp-route-id="@obj.Id"
+                               class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i>Düzenle</a>
+                           
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

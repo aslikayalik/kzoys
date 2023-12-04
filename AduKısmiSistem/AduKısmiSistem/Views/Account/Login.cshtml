@@ -1,0 +1,116 @@
+﻿@model LoginViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AdüKısmiSistem</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" crossorigin="anonymous" />
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+
+    <title>Kısmi Zamanlı Öğrenci Takip Sistemi</title>
+
+</head>
+<body>
+
+
+
+    <div class="content">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-5 ">
+                    <br />
+                    <br />
+                    <img src="~/images/undraw_remotely_2j6y.svg" alt="Image" class="img-fluid">
+                </div>
+                <div class="col-md-7  contents">
+                    <div class="row justify-content-center">
+
+                        <div class="mb-4">
+                            <br />
+                            <br />
+
+                            <center><h2>Adnan Menderes Üniversitesi Kısmi Zamanlı Öğrenci Takip Sistemi</h2></center>
+
+                            <img src="~/images/adüLogo.jpg" alt="AdüLogo" width="100px" height="100px" class="img-fluid">
+                            <br />
+
+                        </div>
+                        <form asp-controller="Account" asp-action="Login" method="post" role="form">
+                            <div class="row">
+                                <div class="col-md-6">
+
+
+                                    <label asp-for="Email">Email</label>
+
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6">
+
+                                    <label asp-for="Password">Parola</label>
+
+                                    <input asp-for="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                                </div>
+                            </div>
+
+                            <br />
+
+                            <button type="submit" class="btn btn-primary" style="width:150px">Giriş Yap</button>
+
+
+                        </form>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            <partial name="_Notifications" />
+
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <span class="text-muted"><b><i>bizar ©</i></b><a target="_blank" href="https://www.adu.edu.tr/">Aydın Adnan Menderes Üniversitesi</a></span>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+
+</body>
+</html>
+

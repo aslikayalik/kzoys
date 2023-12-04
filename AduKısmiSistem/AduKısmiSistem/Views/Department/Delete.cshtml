@@ -1,0 +1,24 @@
+﻿@model Department
+
+<form method="post" asp-action="Delete">
+    <input asp-for="Id" hidden/>
+
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+<h2 >Birim Silme Sayfası</h2>
+<hr/>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DepartmentName">Birim Adı</label>
+            <input asp-for="DepartmentName" disabled class="form-control" />
+            <span asp-validation-for="DepartmentName" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:150px">Sil</button>
+        <a asp-controller="Department" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            Birim Listesine Dön
+        </a>
+
+    </div>
+</form>
+
+
