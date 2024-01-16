@@ -1,4 +1,4 @@
-# AduKısmiSistem Project
+# Adü Kısmi Zamanlı Öğrenci Yönetim Sistemi
 
 This repository contains the source code for the AduKısmiSistem project.
 
